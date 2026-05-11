@@ -1,0 +1,29 @@
+{
+  "raw_rows": 9011,
+  "rows_after_relevance_filter": 8730,
+  "rows_after_cleaning": 7507,
+  "unique_companies": 261,
+  "date_min": "2021-08-24 04:10:51+00:00",
+  "date_max": "2026-05-11 00:01:40+00:00",
+  "tracks": {
+    "IT": 5794,
+    "Data Science": 1713
+  },
+  "top_countries": {
+    "CA": 1215,
+    "India": 738,
+    "TX": 515,
+    "NY": 273,
+    "AR": 269,
+    "Flexible / Remote": 240,
+    "WA": 219,
+    "IL": 202,
+    "GA": 170,
+    "Unknown": 160,
+    "United Kingdom": 156,
+    "VA": 155,
+    "Mexico": 151,
+    "NC": 132,
+    "CO": 111
+  }
+}
