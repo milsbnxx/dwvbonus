@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Streamlit dashboard for DS/IT job market analytics."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -87,6 +90,10 @@ st.set_page_config(page_title="DS & IT Jobs Dashboard", layout="wide")
 st.markdown(
     """
     <style>
+    :root {
+        color-scheme: light;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;600;700&display=swap');
 
     .stApp {
@@ -94,15 +101,18 @@ st.markdown(
             radial-gradient(circle at 10% 10%, #ffd6ea 0%, rgba(255,214,234,0) 38%),
             radial-gradient(circle at 90% 8%, #f4d9ff 0%, rgba(244,217,255,0) 35%),
             linear-gradient(140deg, #fff7fb 0%, #fff0f7 48%, #fdf5ff 100%);
+        color: #2f1530 !important;
     }
 
     h1, h2, h3 {
         font-family: 'Space Grotesk', sans-serif !important;
         letter-spacing: -0.02em;
+        color: #2f1530 !important;
     }
 
     p, div, label, span {
         font-family: 'Manrope', sans-serif !important;
+        color: #3a1a3d !important;
     }
 
     [data-testid="stMetric"] {
@@ -116,6 +126,24 @@ st.markdown(
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
         border-right: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #311535 !important;
+    }
+
+    [data-baseweb="select"] *,
+    [data-baseweb="input"] *,
+    [data-baseweb="tag"] * {
+        color: #311535 !important;
+    }
+
+    .stDateInput * {
+        color: #311535 !important;
+    }
+
+    .stDataFrame, .stDataFrame * {
+        color: #2c1331 !important;
     }
 
     .hero {
@@ -202,6 +230,15 @@ def normalize_country_label(country: str, primary_location: str, work_mode: str)
     return c
 
 
+def style_figure(fig):
+    fig.update_layout(
+        plot_bgcolor="rgba(255,255,255,0.86)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font={"color": "#3a1a3d"},
+    )
+    return fig
+
+
 if not DATA_PATH.exists():
     st.error(f"Dataset not found: {DATA_PATH}")
     st.stop()
@@ -261,7 +298,7 @@ with row1_left:
         title="Postings by Track",
         text_auto=True,
     )
-    fig_track.update_layout(plot_bgcolor="rgba(255,255,255,0.86)", paper_bgcolor="rgba(0,0,0,0)")
+    fig_track = style_figure(fig_track)
     st.plotly_chart(fig_track, use_container_width=True)
 
 with row1_right:
@@ -275,7 +312,7 @@ with row1_right:
         title="Track Share",
     )
     fig_donut.update_traces(textposition="inside", textinfo="percent+label")
-    fig_donut.update_layout(plot_bgcolor="rgba(255,255,255,0.86)", paper_bgcolor="rgba(0,0,0,0)")
+    fig_donut = style_figure(fig_donut)
     st.plotly_chart(fig_donut, use_container_width=True)
 
 row2_left, row2_right = st.columns(2)
@@ -293,11 +330,8 @@ with row2_left:
         title="Top 20 Locations",
         text_auto=True,
     )
-    fig_country.update_layout(
-        yaxis={"categoryorder": "total ascending"},
-        plot_bgcolor="rgba(255,255,255,0.86)",
-        paper_bgcolor="rgba(0,0,0,0)",
-    )
+    fig_country.update_layout(yaxis={"categoryorder": "total ascending"})
+    fig_country = style_figure(fig_country)
     fig_country.update_coloraxes(showscale=False)
     st.plotly_chart(fig_country, use_container_width=True)
 
@@ -317,7 +351,7 @@ with row2_right:
         title="Remote/Hybrid vs On-site by Track",
         text_auto=True,
     )
-    fig_mode.update_layout(plot_bgcolor="rgba(255,255,255,0.86)", paper_bgcolor="rgba(0,0,0,0)")
+    fig_mode = style_figure(fig_mode)
     st.plotly_chart(fig_mode, use_container_width=True)
 
 row3_left, row3_right = st.columns(2)
@@ -337,7 +371,7 @@ with row3_left:
         color_discrete_map=TRACK_COLORS,
         title="Monthly Hiring Trend",
     )
-    fig_month.update_layout(plot_bgcolor="rgba(255,255,255,0.86)", paper_bgcolor="rgba(0,0,0,0)")
+    fig_month = style_figure(fig_month)
     st.plotly_chart(fig_month, use_container_width=True)
 
 with row3_right:
@@ -351,7 +385,7 @@ with row3_right:
         color_continuous_scale="RdPu",
         title="Top Hiring Companies (Treemap)",
     )
-    fig_companies.update_layout(plot_bgcolor="rgba(255,255,255,0.86)", paper_bgcolor="rgba(0,0,0,0)")
+    fig_companies = style_figure(fig_companies)
     st.plotly_chart(fig_companies, use_container_width=True)
 
 st.subheader("Sample Postings")
